@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>camera</title>
+</head>
+<body>
+    <a href="/">Home</a>
+    <video id="video" width="640" height="480" autoplay="true"></video>
+    <button id="snap">Take Photo</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <button id="finalpic" onclick="download()">downlaod</button>
+    <a href="/upload-challan">Upload challan</a>
+</body>
+<script>
+    let canvas = document.querySelector("#canvas");
+    let context = canvas.getContext("2d");
+    let video = document.querySelector("#video");
+    let submit = document.querySelector('#finalpic')
+
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+        .then((stream) => { video.srcObject = stream;
+        video.play();
+    });
+    }
+
+    const imagedata = canvas.toDataURL()
+    
+    document.getElementById("snap").addEventListener("click", () => context.drawImage(video, 0, 0, 640, 480))
+    
+    var download = function(){
+      var link = document.createElement('a');
+      link.download = 'challan.png';
+      link.href = canvas.toDataURL()
+      link.click();
+    }
+</script>
+</html>
